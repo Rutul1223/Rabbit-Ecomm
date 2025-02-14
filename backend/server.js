@@ -1,11 +1,18 @@
 const express = require("express");
-
+const dotenv = require("dotenv");
+const connectDB = require("./config/db");
 const cors = require("cors");
+
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-const PORT = 9000;
+dotenv.config();
+
+const PORT = process.env.PORT || 3000;
+
+// Connect to MongoDB
+connectDB();
 
 app.get("/", (req, res) => {
     res.send("Hello World!");
