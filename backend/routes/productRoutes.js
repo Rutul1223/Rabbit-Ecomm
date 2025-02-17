@@ -249,7 +249,7 @@ router.get("/:id", async (req, res) => {
 // @desc Get similar products basedon the current product's gender and category
 // @access Public
 router.get("/similar/:id", async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
     const product = await Product.findById(id);
     if (!product) {
