@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const NewArrivals = () => {
   const scrollRef = useRef(null);
@@ -9,97 +10,21 @@ const NewArrivals = () => {
   const [scrollLeft, setScrollLeft] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-  const newArrivals = [
-    {
-      _id: "1",
-      name: "Stylish Jacket",
-      price: 120,
-      images: [
-        {
-          url: "https://static.cilory.com/406638-thickbox_default/estonished-olive-shirt.jpg",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
-    {
-      _id: "2",
-      name: "Stylish Jacket",
-      price: 120,
-      images: [
-        {
-          url: "https://assets.myntassets.com/dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/2024/NOVEMBER/19/KaIsjLFM_c5aa4a8f173e497a8b2e92eb9b04df15.jpg",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
 
-    {
-      _id: "3",
-      name: "Stylish Jacket",
-      price: 120,
-      images: [
-        {
-          url: "https://muselot.in/cdn/shop/products/Plaintshirtsforwomenonline-Greyplaintshirtforwomen-Muselot_1.jpg?v=1657571397",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
-    {
-      _id: "4",
-      name: "Stylish Jacket",
-      price: 120,
-      images: [
-        {
-          url: "https://d1pdzcnm6xgxlz.cloudfront.net/tops/8905875247418-18.jpg",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
-    {
-      _id: "5",
-      name: "Stylish Jacket",
-      price: 120,
-      images: [
-        {
-          url: "https://www.snitch.co.in/cdn/shop/products/Lazar_Oct20024_1800x1800.jpg?v=1667280732",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
-    {
-      _id: "6",
-      name: "Stylish Jacket",
-      price: 120,
-      images: [
-        {
-          url: "https://images.meesho.com/images/products/348858433/r5alq_512.webp",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
-    {
-      _id: "7",
-      name: "Stylish Jacket",
-      price: 120,
-      images: [
-        {
-          url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOpH_zNx4WDZes9v4qlNKkIUYSJEepV7OWGg&s",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
-    {
-      _id: "8",
-      name: "Stylish Jacket",
-      price: 120,
-      images: [
-        {
-          url: "https://www.stirlingsports.co.nz/productimages/magnify/1/107513_638266_108074.jpg",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
-  ];
+  const [newArrivals, setNewArrivals] = useState([]);
+
+  useEffect(() => {
+    const fetchNewArrivals = async () => {
+      try {
+        const response = await axios.get(`
+          ${import.meta.env.VITE_BACKEND_URL}/api/products/new-arrivals`);
+        setNewArrivals(response.data);
+      } catch (error) {
+        console.error("Error fetching new arrivals:", error);
+      }
+    };
+    fetchNewArrivals();
+  }, []);
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
@@ -140,7 +65,7 @@ const NewArrivals = () => {
       updateScrollButtons();
       return () => container.removeEventListener("scroll", updateScrollButtons);
     }
-  }, []);
+  }, [newArrivals]);
 
   return (
     <section className="py-16 px-4 lg:px-0">
