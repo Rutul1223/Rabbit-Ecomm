@@ -58,7 +58,7 @@ router.post("/", async (req, res) => {
         (acc, item) => acc + (Number(item.price) * Number(item.quantity) || 0),
         0
       );
-
+      
       await cart.save();
       return res.status(200).json(cart);
     } else {
