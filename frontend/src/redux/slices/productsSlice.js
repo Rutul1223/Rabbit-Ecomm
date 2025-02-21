@@ -41,7 +41,7 @@ export const fetchProductsByFilters = createAsyncThunk(
 // Async thunk to fetch a single product by ID
 export const fetchProductDetails = createAsyncThunk(
   "products/fetchProductDetails",
-  async ({ id }) => {
+  async (id) => {
     const response = await axios.get(
       `${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`
     );
@@ -53,7 +53,7 @@ export const fetchProductDetails = createAsyncThunk(
 export const updateProduct = createAsyncThunk(
   "products/updateProduct",
   async ({ id, productData }) => {
-    const response = await axios.get(
+    const response = await axios.put(
       `${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`,
       productData,
       {
@@ -133,7 +133,7 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProductsByFilters.rejected, (state, action) => {
         state.loading = false;
-        state.error - action.error.message;
+        state.error = action.error.message;
       })
 
       // Handle fetching single product details
@@ -175,11 +175,11 @@ const productsSlice = createSlice({
       })
       .addCase(fetchSimilarProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = action.payload;
+        state.similarProducts = action.payload;
       })
       .addCase(fetchSimilarProducts.rejected, (state, action) => {
         state.loading = false;
-        state.error - action.error.message;
+        state.error = action.error.message;
       });
   },
 });
