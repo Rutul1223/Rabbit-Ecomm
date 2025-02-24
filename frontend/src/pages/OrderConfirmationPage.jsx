@@ -1,34 +1,22 @@
-const checkout = {
-  _id: "12323",
-  createdAt: new Date(),
-  checkoutItems: [
-    {
-      productId: "1",
-      name: "Jacket",
-      color: "black",
-      size: "M",
-      price: 150,
-      quantity: 1,
-      image: "https://d1pdzcnm6xgxlz.cloudfront.net/tops/8905875247418-18.jpg",
-    },
-    {
-      productId: "2",
-      name: "T-shirt",
-      color: "white",
-      size: "M",
-      price: 120,
-      quantity: 2,
-      image: "https://d1pdzcnm6xgxlz.cloudfront.net/tops/8905875247418-18.jpg",
-    },
-  ],
-  shippingAddress: {
-    address: "123 Fashion Street",
-    city: "New York",
-    country: "USA",
-  },
-};
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const OrderConfirmationPage = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { checkout } = useSelector((state) => state.checkout);
+
+  // Clear the cart when order is confirmed
+  useEffect(() => {
+    if (checkout && checkout._id) {
+      dispatch(clearCart());
+      localStorage.removeItem("cart");
+    } else {
+      navigate("/my-orders");
+    }
+  }, [checkout, navigate, dispatch]);
+
   const calculateEstimatedDilivery = (createdAt) => {
     const orderDate = new Date(createdAt);
     orderDate.setDate(orderDate.getDate() + 10); // Add 10 days to the order date
