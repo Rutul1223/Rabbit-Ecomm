@@ -92,7 +92,7 @@ export const removeFromCart = createAsyncThunk(
 // Merge guest cart into user cart
 export const mergeCart = createAsyncThunk(
   "cart/mergeCart",
-  async (guestId, { rejectWithValue }) => {
+  async (guestId, user, { rejectWithValue }) => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/cart/merge`,
@@ -163,7 +163,8 @@ const cartSlice = createSlice({
       })
       .addCase(updateCartItemQuantity.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || "Failed to update item quantity";
+        state.error =
+          action.payload?.message || "Failed to update item quantity";
       })
       .addCase(removeFromCart.pending, (state) => {
         state.loading = true;
@@ -190,9 +191,9 @@ const cartSlice = createSlice({
       .addCase(mergeCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || "Failed to merge cart ";
-      })
+      });
   },
 });
 
-export const {clearCart} = cartSlice.actions;
+export const { clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
